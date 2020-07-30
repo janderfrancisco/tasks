@@ -10,7 +10,7 @@
             </form>
         </div>
         <div class="col">
-            <form action="form form-inline" @submit.prevent="onSubmit()">
+            <form action="form form-inline">
                 <input type="text" name="" placeholder="Nome da tarafa" class="form-control" v-model="filter">
                
             </form>
@@ -30,8 +30,8 @@
                     <td>{{ task.id }}</td>
                     <td>{{ task.name }}</td>
                     <td>
-                        <a href="#" @click.prevent="editTask(index)" class="btn btn-info">Editar</a>
-                        <a href="#"@click.prevent="deleteTask(index)"  class="btn btn-danger">Deletar</a>
+                        <a href="#" @click.prevent="editTask(task.id)" class="btn btn-info">Editar</a>
+                        <a href="#"@click.prevent="deleteTask(task.id)"  class="btn btn-danger">Deletar</a>
                       
                     </td>
                 </tr>
@@ -71,10 +71,10 @@ export default {
             this.tasks.push(this.task)
             this.clearForm() 
         },
-        editTask (index){
+        editTask (id){
+            this.updateIndex = this.findIndexItem(id)
             this.updating = true
-            this.updateIndex = index
-            this.task = this.tasks[index]
+            this.task = this.tasks[this.updateIndex]
         },
         update(){
             this.tasks[this.updateIndex] = this.task
@@ -87,8 +87,15 @@ export default {
                 name: ''
             } 
         },
-        deleteTask (index){
+        deleteTask (id){
+            let index = this.findIndexItem(id)
             this.tasks.splice(index, 1)
+        },
+        findIndexItem(id){
+            for (let index = 0; index < this.tasks.length - 1; index++) {
+                if(this.tasks[index].id === id)
+                    return index               
+            }
         }
     },
     computed:{
@@ -98,7 +105,7 @@ export default {
             
             let vm = this
             return this.tasks.filter(task => {
-                return task.name.toLowerCase().indexOf(vm.filter.toLowerCase()) > -1
+                return task.name.toLowerCase().indexOf(vm.filter.toLowerCase()) > -1 
             })
             
         }
