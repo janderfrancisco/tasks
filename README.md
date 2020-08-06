@@ -1,4 +1,4 @@
-# tasks
+# a simple list of tasks to train knowledge in Vue.JS
 
 > A Vue.js project
 
